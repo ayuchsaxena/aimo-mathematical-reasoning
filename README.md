@@ -30,12 +30,12 @@ The attached evaluation files contain:
 - `reference.csv`: 10 reference problems.
 - Three response files, each containing 32 generated responses for one problem (96 responses total across 3 problems).
 
-The three response files are being organized as:
+The intended names for the three response files are:
 - `solution-variant-1.csv` — responses for the delightful-sequence problem.
 - `solution-variant-2.csv` — responses for the triangle geometry problem.
 - `solution-variant-3.csv` — responses for the tennis-tournament pairing problem.
 
-These are repeated model responses to three problems, not 96 distinct questions. The available files do not provide a verified answer key for all 10 reference problems, so they should be treated as raw experiment outputs rather than a completed accuracy benchmark.
+Each file contains repeated model responses for one problem, so the 96 rows represent 3 distinct questions, not 96. The available files do not provide a verified answer key for all 10 reference problems, so these should be treated as raw experiment outputs rather than a completed accuracy benchmark.
 
 ## The early evaluation mistake: no proper baseline
 

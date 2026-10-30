@@ -1,39 +1,37 @@
-# AIMO Mathematical Reasoning
+# AI Mathematical Olympiad — Model Experiments
 
-Experiments in mathematical-reasoning model inference, prompt construction, model configuration, and evaluation for the AI Mathematical Olympiad (AIMO).
+This repository contains selected experiments with AI models solving competition-style mathematics problems for the AI Mathematical Olympiad (AIMO).
 
-## Project overview
+The goal was to explore how model choice, prompts, and inference settings affect the way a model works through a math problem and produces an answer.
 
-This repository collects selected notebook experiments from AIMO-related work. The notebooks explore inference pipelines, prompt strategies, and different Qwen/DeepSeek model configurations. They should be treated as experimental artifacts, not as evidence of comparative accuracy unless measured results are explicitly reported.
+## What we worked on
 
-## Notebooks
+My contribution focused on testing and evaluating model setups, especially Qwen and DeepSeek-based models. I compared prompt approaches, reviewed inference behaviour, and explored different model configurations, including AutoRound variants.
 
-| Notebook | Focus |
+In simple terms, we tested different ways to run the models and guide their reasoning, then kept notebooks that show the approaches we explored. This repository documents those experiments; it does not claim a verified accuracy improvement or an official competition placement.
+
+## Selected notebooks
+
+| Notebook | What it covers |
 | --- | --- |
-| [01 — AIMO2 inference pipeline](notebooks/01-aimo2-inference-pipeline.ipynb) | Inference pipeline and candidate-answer handling |
-| [02 — Qwen 14B prompt experiments](notebooks/02-qwen-14b-prompt-experiments.ipynb) | Prompt construction and reasoning experiments |
-| [03 — AutoRound inference v2](notebooks/03-autoround-inference-v2.ipynb) | AutoRound model artifact and inference configuration |
-| [04 — AutoRound baseline](notebooks/04-autoround-inference-baseline.ipynb) | Separate model artifact and inference configuration |
-| [05 — Qwen 7B prompt evaluation](notebooks/05-qwen-7b-prompt-evaluation.ipynb) | Experiments with a 7B model configuration |
+| [AIMO2 inference pipeline](01-aimo2-inference-pipeline.ipynb) | Running the inference pipeline and handling candidate answers |
+| [Qwen 14B prompt experiments](02-qwen-14b-prompt-experiments.ipynb) | Testing different prompts with a 14B model |
+| [AutoRound inference v2](03-autoround-inference-v2.ipynb) | Testing an AutoRound model configuration |
+| [AutoRound baseline](04-autoround-inference-baseline.ipynb) | A baseline for comparison with another configuration |
+| [Qwen 7B prompt evaluation](05-qwen-7b-prompt-evaluation.ipynb) | Experiments with a smaller model and its prompt setup |
 
-## Contribution and attribution
+## What we learned
 
-My contribution to this work focused on testing and evaluating Qwen and other mathematical-reasoning models, including examining inference behaviour and experimental configurations. Model development, fine-tuning, and other experimentation were contributed by collaborators; contributions should be attributed to the relevant original authors rather than implying that all model work was mine.
+Model size alone does not tell the whole story. Prompt wording, inference settings, answer extraction, and runtime constraints all matter when testing math-solving systems. A useful comparison also needs the same evaluation questions and clear scoring, rather than relying only on logs or a few examples.
 
-Some notebooks originated from Kaggle work. Original sources and licensing/redistribution details should be retained and verified before redistribution. This repository does not claim ownership of the underlying model weights or third-party artifacts.
+The notebooks are records of our experiments, not a claim that every configuration was better than the others.
 
-## Evaluation status and limitations
+## Running the notebooks
 
-Saved model-loading and generation logs show that code paths were exercised, but do not by themselves establish exact-answer accuracy or a reliable comparison between configurations. Any claims about performance should be supported by a reproducible evaluation set and explicit metrics.
+These notebooks were created for Kaggle-style environments and may require GPU access, specific libraries, and model files that are not included here. Check each notebook's setup and model paths before running it. Results should be re-evaluated on a consistent test set before drawing performance conclusions.
 
-Before treating results as benchmark evidence, inspect the notebooks for competition-specific shortcuts, validate answer extraction/selection behaviour, and confirm that local runs execute actual inference rather than returning preset outputs.
+Some work originated from external notebooks and model projects. Please check the original sources and their licences before redistributing or reusing third-party code or model files.
 
-See [evaluation/README.md](evaluation/README.md) for the proposed evaluation approach.
+## Acknowledgement
 
-## Runtime
-
-These notebooks were originally designed for Kaggle-style GPU environments and may depend on large model artifacts and libraries such as vLLM. They are not guaranteed to run unchanged on a standard laptop. Review each notebook's imports, model paths, hardware requirements, and runtime configuration before execution.
-
-## Scope
-
-This is an experimental portfolio project documenting model testing and inference experiments. It is not an official AIMO resource and does not claim an independently verified competition result.
+Thanks to the collaborators whose model work and experiments informed this project. The work documented here includes my focus on testing and evaluation; model development and fine-tuning should be credited to their respective contributors.

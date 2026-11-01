@@ -1,58 +1,54 @@
 # AI Mathematical Olympiad — Model Experiments
 
-This repository contains selected experiments with AI models solving competition-style mathematics problems for the AI Mathematical Olympiad (AIMO).
+This repository documents experiments with AI models attempting competition-style mathematical reasoning problems for the AI Mathematical Olympiad (AIMO).
 
-The question we explored was simple: **how do model choice, prompts, and inference settings affect a model's attempt to solve a maths problem and return an answer?**
+The central question was: **how do model choice, prompts, and inference settings affect a model's attempts to solve a maths problem and return an answer?**
 
-## What we worked on
+## My contribution
 
-My contribution focused on testing model setups and reviewing inference behaviour, especially with Qwen- and DeepSeek-based models. The notebooks explore different prompt approaches, model sizes, quantized model configurations, and ways to run inference.
+My role focused on **model testing and evaluation**. I helped test model configurations and prompt approaches, review inference behaviour, and inspect the generated responses. The experiments included Qwen- and DeepSeek-based models, different model sizes, quantized configurations, and inference setups.
 
-In practical terms, we tried different ways to run a model and guide its response, then kept notebooks documenting those experiments. Model development and fine-tuning were also contributed by collaborators.
+The goal was to understand how these setups behaved in practice and to document the outputs for further evaluation. Model development and fine-tuning were contributed by collaborators; this repository does not attribute that work to me.
 
-## A few concrete details
+## Experiment overview
 
-| Item | What the notebooks show |
+| Item | What is documented |
 | --- | --- |
 | Selected notebooks | 5 |
 | Model sizes explored | 7B and 14B |
 | Model families/configurations | DeepSeek-R1 distilled models based on Qwen, Qwen prompt experiments, and AutoRound variants |
 | Inference engine | vLLM |
 | Recorded vLLM versions | 0.7.1 and 0.7.3 |
-| Example inference setup | 4 visible GPUs, tensor parallelism of 4, and a maximum sequence length of 12,288 tokens in the logged configurations |
-| Measured accuracy | 81.8% |
+| Example inference setup | 4 visible GPUs, tensor parallelism of 4, and a maximum sequence length of 12,288 tokens in logged configurations |
 
-These are details from the saved notebooks and their logs, not a claim that one model or configuration performed best.
+These details describe the saved notebooks and logs. They do **not** establish that one configuration performed better than another.
 
-## Saved problem and response data
+## Evaluation data and limitations
 
-The attached evaluation files contain:
+The saved evaluation files contain:
 - `reference.csv`: 10 reference problems.
-- Three response files, each containing 32 generated responses for one problem (96 responses total across 3 problems).
+- Three response files, each with 32 generated responses for a single problem (96 responses across 3 distinct problems).
 
-The intended names for the three response files are:
-- `solution-variant-1.csv` — responses for the delightful-sequence problem.
-- `solution-variant-2.csv` — responses for the triangle geometry problem.
-- `solution-variant-3.csv` — responses for the tennis-tournament pairing problem.
+The response files correspond to:
+- `solution-variant-1.csv` — delightful-sequence problem.
+- `solution-variant-2.csv` — triangle geometry problem.
+- `solution-variant-3.csv` — tennis-tournament pairing problem.
 
-Each file contains repeated model responses for one problem, so the 96 rows represent 3 distinct questions, not 96. The available files do not provide a verified answer key for all 10 reference problems, so these should be treated as raw experiment outputs rather than a completed accuracy benchmark.
+The 96 responses are repeated attempts on only three distinct questions; they should not be interpreted as 96 independently evaluated problems. The available files do not include a verified answer key and consistent scoring results sufficient to substantiate an accuracy figure. **For that reason, this README does not report a measured accuracy percentage or a verified accuracy improvement.**
 
-## The early evaluation mistake: no proper baseline
+## What the evaluation needs
 
-One thing we would do differently is establish a baseline before comparing prompts and model configurations.
+One important lesson from this work is that a successful inference run is not the same as a correct answer. Without a fixed question set, verified answers, consistent scoring, and a baseline, we cannot reliably conclude that a prompt or configuration improves mathematical reasoning.
 
-Early experiments looked at whether a setup ran and how the model generated answers, but **running successfully is not the same as solving the problems correctly**. Without a fixed set of questions, a consistent scoring method, and a baseline model to compare against, it is difficult to tell whether a prompt or configuration actually improved performance.
+A stronger evaluation should:
+1. Use a fixed set of questions with verified reference answers.
+2. Record a baseline model and its inference settings.
+3. Change one variable at a time, keeping the evaluation set and scoring rules consistent.
+4. Report exact-answer accuracy only when the scoring method and results can be reproduced.
+5. Track invalid or unparseable answers, inference time, and resource use.
+6. Preserve per-question results so differences between configurations can be inspected.
 
-That makes conclusions weaker: changes in output may look promising without proving a real gain in accuracy. We should have recorded baseline exact-answer accuracy first, then changed one factor at a time and evaluated every version on the same questions.
-
-A stronger evaluation should report:
-- the number of questions tested and the exact-answer accuracy;
-- the baseline model and settings;
-- answer-extraction failures and invalid answers;
-- inference time and resource use;
-- results for each configuration under the same scoring rules.
-
-The evaluation checklist in [evaluation/README.md](evaluation/README.md) outlines these checks. The measured results have not yet been added, so we do not claim a verified accuracy improvement.
+The checklist in [evaluation/README.md](evaluation/README.md) outlines these evaluation considerations. Until those steps are completed and results are recorded, this repository should be treated as an experiment log—not a validated benchmark or an official AIMO competition result.
 
 ## Selected notebooks
 
@@ -61,21 +57,21 @@ The evaluation checklist in [evaluation/README.md](evaluation/README.md) outline
 | [AIMO2 inference pipeline](01-aimo2-inference-pipeline.ipynb) | Running the inference pipeline and handling candidate answers |
 | [Qwen 14B prompt experiments](02-qwen-14b-prompt-experiments.ipynb) | Testing prompts with a 14B model configuration |
 | [AutoRound inference v2](03-autoround-inference-v2.ipynb) | Testing an AutoRound model configuration |
-| [AutoRound baseline](04-autoround-inference-baseline.ipynb) | A baseline model configuration for comparison |
+| [AutoRound baseline](04-autoround-inference-baseline.ipynb) | An inference configuration intended to serve as a baseline |
 | [Qwen 7B prompt evaluation](05-qwen-7b-prompt-evaluation.ipynb) | Experiments with a 7B model configuration |
 
-## What we learned
+## What these experiments suggest
 
-Model size alone does not tell the whole story. Prompt wording, inference settings, answer extraction, and runtime limits all matter. To know whether a change helps, the models need to be compared on the same questions with the same scoring rules.
+Model size alone does not tell the whole story. Prompt wording, inference settings, answer extraction, and runtime constraints all affect the outputs and the ability to evaluate them. Determining whether a change helps requires running configurations on the same questions under the same scoring rules.
 
-These notebooks document experiments, not a verified ranking of the configurations or an official AIMO competition result.
+These notebooks capture exploratory testing and evaluation work. They do not establish a verified ranking of configurations or an official AIMO result.
 
 ## Running the notebooks
 
-The notebooks were created for Kaggle-style GPU environments and may require GPU access, specific libraries, and model files that are not included here. Check each notebook's setup and model paths before running it. Some notebooks log CUDA-based inference with vLLM and tensor parallelism across four GPUs; a standard laptop may not meet those requirements.
+The notebooks were created for Kaggle-style GPU environments and may require GPU access, specific libraries, and model files that are not included here. Review each notebook's setup and model paths before running it. Some notebooks log CUDA-based inference with vLLM and tensor parallelism across four GPUs; a standard laptop may not meet those requirements.
 
-Some work originated from external notebooks and model projects. Please check original sources and licences before redistributing or reusing third-party code or model files.
+Some work originated from external notebooks and model projects. Check original sources and licences before redistributing or reusing third-party code or model files.
 
-## Acknowledgement
+## Acknowledgements
 
-Thanks to the collaborators whose model work and experiments informed this project. My documented focus was on testing model configurations and inference behaviour; model development and fine-tuning should be credited to their respective contributors.
+Thanks to the collaborators whose model work and experiments informed this project. My contribution focused on testing model configurations, reviewing inference behaviour, and evaluating the available outputs. Model development and fine-tuning should be credited to their respective contributors.

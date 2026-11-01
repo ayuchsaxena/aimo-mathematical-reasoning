@@ -23,29 +23,19 @@ The goal was to understand how these setups behaved in practice and to document 
 
 These details describe the saved notebooks and logs. They do **not** establish that one configuration performed better than another.
 
-## Mistakes and limitations identified in review
+## Mistakes we identified
 
-Reviewing the notebooks surfaced several concrete weaknesses in the experimental design and evaluation code. These are useful lessons from the work, not claims that the models themselves necessarily failed for each reason.
+Reviewing the notebooks helped us identify a few mistakes and areas to improve:
 
-1. **The evaluation set was too small and uneven.** The saved response files contain 96 generations across only three distinct questions, with 32 attempts per question. Repeated generations can help study variability, but they do not substitute for a broad, representative problem set. Three problems are far too few to support general claims about mathematical reasoning.
+1. **Too few questions:** We tested 96 responses, but they covered only three different problems. This was not enough to judge how well the models solve maths problems in general.
+2. **Scoring issues:** Some notebooks used predefined answers for selected questions. This helped with testing, but we needed a more reliable way to check answers.
+3. **Answer-reading errors:** Our code could fail to read some answers correctly, especially when the answer format was unusual.
+4. **Skipped questions:** Some local tests skipped questions that were outside a small selected group, so the results did not represent a full evaluation.
+5. **Unclear prompt comparisons:** We tried different prompts, but we did not compare them consistently enough to know which worked best.
+6. **Inconsistent test settings:** We changed model settings and configurations across experiments, making the results harder to compare fairly.
+7. **No proven improvement:** We had a baseline notebook, but we did not have enough consistent results to show that one setup performed better than another.
 
-2. **The scoring path was not a clean, independent evaluation.** Some notebooks include hard-coded question-to-answer mappings for a small set of known problems and use them to print a running score. That is useful as a local debugging aid, but it is not a substitute for a separate, verified evaluation pipeline. The fallback answer of `0` for an unrecognised question can also make an unknown question look like it has a valid reference answer. The scoring should fail explicitly when no verified answer exists.
-
-3. **Some local runs intentionally skipped most questions.** For example, the Qwen 14B experiment's `_should_skip` method returns a fallback answer for questions outside a small selected subset when not running in the competition environment. That can be sensible for targeted debugging, but results from such a run must not be treated as full-dataset evaluation. Skipped questions and fallback outputs need to be recorded separately from model predictions.
-
-4. **Answer extraction is fragile.** The notebooks use a regular expression based on `oxed{(.*?)}` to extract boxed answers. It can find the text inside a typical `\\boxed{...}` expression, but it does not correctly handle nested braces and may truncate expressions that contain braces. Empty or malformed outputs are filtered, while answer selection can fall back to `210`; those cases should be counted as extraction failures, not silently treated as ordinary predictions.
-
-5. **The voting and fallback rules can hide failure modes.** Majority voting over generated answers can be useful, but the current approach only votes over outputs that can be parsed as integers. It does not, by itself, establish that the majority answer is correct. A fixed fallback such as `210` when no usable answer is found can obscure the difference between a genuine model prediction and a failed generation/parse. Report parse success rate and fallback rate alongside accuracy.
-
-6. **Prompt comparisons are confounded.** The notebooks vary prompt wording and assistant thought prefixes, but the saved results do not provide a complete, consistently scored, per-question comparison under a controlled protocol. Some variants also repeat prompt structures. Without holding the model, question set, decoding settings, and scoring procedure constant while changing one factor at a time, we cannot attribute differences to prompt wording.
-
-7. **Reproducibility is incomplete.** The notebooks use different random seeds, model paths, batch sizes, context limits, quantization settings, and inference settings. The presence of seed-setting code does not guarantee deterministic outputs; for example, CUDA/cuDNN settings and sampling can still affect reproducibility. A fair comparison needs a recorded configuration for every run, repeated trials where appropriate, and a clear explanation of which settings changed.
-
-8. **The saved baseline is not enough to establish an improvement.** A notebook named “baseline” is not automatically a valid baseline comparison. To claim an improvement, the baseline and candidate configuration must be run on the same verified questions with the same scoring and comparable resource/runtime constraints, and the results must be reported side by side.
-
-9. **Competition-oriented runtime logic complicates offline interpretation.** The notebooks contain time cutoffs, environment-dependent model paths, and competition/local-run branches. These may be necessary for the target runtime, but they make it important to distinguish a successful pipeline execution from a completed, comparable evaluation. Timeouts, skipped items, and environment-specific behaviour should be logged explicitly.
-
-These issues mean the saved work is best interpreted as **exploratory model testing**, not a validated benchmark. The key improvement is to separate inference, answer extraction, reference-answer validation, scoring, and reporting into testable components.
+These lessons showed us that successful model runs do not automatically mean correct answers or better performance. We needed more questions, more consistent testing, and a clearer way to check and compare results.
 
 ## Evaluation data
 
